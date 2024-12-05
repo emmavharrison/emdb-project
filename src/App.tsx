@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { NavBar } from './components/navigation/NavBar'
+import { Button } from './components/ui/button'
 
 const client = generateClient<Schema>();
 
@@ -22,6 +24,7 @@ function App() {
 
   return (
     <main>
+      <NavBar />
       <h1>My todos</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
@@ -36,7 +39,7 @@ function App() {
           Review next step of this tutorial.
         </a>
       </div>
-      <button onClick={signOut}>Sign out</button>
+      <Button onClick={signOut}>Sign out</Button>
     </main>
   );
 }

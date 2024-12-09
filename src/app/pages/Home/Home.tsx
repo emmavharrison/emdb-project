@@ -1,3 +1,9 @@
+// import { useAuthenticator } from "@aws-amplify/ui-react";
+
 export const Home = () => {
-  return <div>Home</div>;
+  // const { user } = useAuthenticator((context) => [context.user]);
+  
+  return <div>Welcome!</div>;
 };
+
+

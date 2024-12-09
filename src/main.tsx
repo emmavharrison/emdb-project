@@ -3,25 +3,54 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { Amplify } from "aws-amplify";
 import outputs from "../amplify_outputs.json";
-import { Authenticator } from "@aws-amplify/ui-react";
+
 import "@aws-amplify/ui-react/styles.css";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { NavBar } from "./app/components/navigation/NavBar.tsx";
 import { LandingPage } from "./app/pages/LandingPage/LandingPage.tsx";
 import { CollectionsPage } from "./app/pages/Collections/Collections.tsx";
+import { ProtectedRoute } from "./app/components/navigation/ProtectedRoute.tsx";
+import { Authenticator } from "@aws-amplify/ui-react";
+import { Home } from "./app/pages/Home/Home.tsx";
+import { SignIn } from "./app/pages/SignIn/SIgnIn.tsx";
+import { Profile } from "./app/pages/Profile/Profile.tsx";
 
 Amplify.configure(outputs);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Authenticator>
+    <Authenticator.Provider>
       <BrowserRouter>
         <NavBar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/collections" element={<CollectionsPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/collections"
+            element={
+              <ProtectedRoute>
+                <CollectionsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
-    </Authenticator>
+    </Authenticator.Provider>
   </React.StrictMode>
 );

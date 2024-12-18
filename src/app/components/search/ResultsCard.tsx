@@ -1,7 +1,7 @@
 import { useSearchMovies } from "@/app/api/searchMovies"
 import { useQuery } from "@tanstack/react-query"
 
-export const Results = () => {
+export const ResultsCard = () => {
     const {data, error, isLoading} = useSearchMovies(searchedMovie)
 
   if (status === 'pending') {

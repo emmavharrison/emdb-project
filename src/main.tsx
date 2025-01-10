@@ -14,8 +14,12 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import { Home } from "./app/pages/Home/Home.tsx";
 import { SignIn } from "./app/pages/SignIn/SIgnIn.tsx";
 import { Profile } from "./app/pages/Profile/Profile.tsx";
+import { Results } from "./app/pages/Results/Results.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 Amplify.configure(outputs);
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -30,6 +34,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/results/:searchedMovie"
+            element={
+              <ProtectedRoute>
+                <QueryClientProvider client={queryClient}>
+                  <Results />
+                  </QueryClientProvider>
               </ProtectedRoute>
             }
           />

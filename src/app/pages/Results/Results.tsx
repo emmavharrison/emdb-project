@@ -1,5 +1,5 @@
 import { fetchSearchMovies } from "@/app/api/searchMovies";
-import { ResultsCards } from "@/app/components/search/ResultsCards";
+import { ResultsCards } from "@/app/components/movie-cards/search-results/ResultsCards";
 import {
   QueryClient,
   QueryClientProvider,

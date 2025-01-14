@@ -1,10 +1,11 @@
-## AWS Amplify React+Vite Starter Template
+## Installation
 
-This repository provides a starter template for creating applications using React+Vite and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
+- Clone the repo
+- Run `npm install`
+- Ensure you have AWS CLI tools installed (will have to run an Admin session for sudo permissions) and AWS Amplify CLI tools installed
+- Run `aws configure` to login to AWS account
+- To generate the Amplify config JSON file, run `amplify pull --appId YOUR_APP_ID --envName YOUR_ENV_NAME`
 
-## Overview
-
-This template equips you with a foundational React application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
 
 ## Features
 

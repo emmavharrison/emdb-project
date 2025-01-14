@@ -3,7 +3,6 @@ import { SearchBar } from "@/app/components/search/SearchBar";
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
 } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();

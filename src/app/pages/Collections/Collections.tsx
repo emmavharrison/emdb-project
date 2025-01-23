@@ -1,5 +1,13 @@
-export const CollectionsPage = () => {
-  return <div>CollectionsPage</div>;
+import { generateClient } from "aws-amplify/data";
+import type { Schema } from "../../../../amplify/data/resource"
+
+const client = generateClient<Schema>()
+
+export const CollectionsPage = async () => {
+  
+  const { data: movies } = await client.models.MovieDB.list()
+
+return <ul>{movies.map(movie => <li key={movie.id}>{movie.id}</li>)}</ul>
 };
 
 

@@ -14,7 +14,9 @@ export const Home = () => {
     <>
       <div>Welcome!</div>
       <QueryClientProvider client={queryClient}>
+        <div className="justify-center flex">
         <SearchBar />
+        </div>
       </QueryClientProvider>
     </>
   );

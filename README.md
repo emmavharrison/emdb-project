@@ -1,3 +1,17 @@
+### EMDB
+
+This is a Good Read's style application for reviewing and collecting movies. User's can curate collections of movies, review movies, and send their collections to friends. Think a hyrbid between Letterboxd, Good Reads, and sharing Spotify playlists.
+
+## Information
+
+This is a React project built with Vite that uses the following tools and technologies:
+
+- AWS Amplify backend
+- AWS Cognito for authentication
+- OMDB Movie API for retrieving movie data
+- Shadcn components
+- Tailwind styling
+
 ## Installation
 
 - Clone the repo

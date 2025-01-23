@@ -1,15 +1,60 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../../amplify/data/resource"
-
-const client = generateClient<Schema>()
+import { useEffect, useState } from "react";
+import { Movie } from "@/app/types/movie-backend-types";
 
 // <ul>{movies.map(movie => <li key={movie.id}>{movie.id}</li>)}</ul>
 
-export const CollectionsPage = () => {
-  
-  client.models.MovieDB.list().then((data) => {console.log('data', data)})
+// const fetchTodos = async () => {
+//   const { data: items, errors } = await client.models.Todo.list();
+//   setTodos(items);
+// };
 
-return <div>Collections page</div>
+
+export const CollectionsPage = () => {
+  // const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Schema["MovieDB"]["type"][]>([]);
+
+  useEffect(() => {
+    const client = generateClient<Schema>()
+    
+    const fetchMovies = async () => {
+      try {
+        const data = await client.models.MovieDB.list();
+        console.log('data', data);
+        // Transform the data to ensure all fields are non-null
+        const transformedMovies: Movie[] = data.data.map(movie => ({
+          id: movie.id,
+          createdAt: movie.createdAt,
+          updatedAt: movie.updatedAt,
+          userId: movie.userId || '',
+          collectionId: movie.collectionId || '',
+          movieId: movie.movieId || '',
+          reviewId: movie.reviewId || '',
+          reviewText: movie.reviewText || '',
+          collectionName: movie.collectionName || '',
+        }));
+        setMovies(transformedMovies);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
+
+  return (
+    <div>
+      <h1>Collections page</h1>
+      {movies.length > 0 ? (
+        <ul>
+          {movies.map(movie => <li key={movie.id}>{movie.movieId}</li>)}
+        </ul>
+      ) : (
+        <p>No movies found.</p>
+      )}
+    </div>
+  );
 };
 
 

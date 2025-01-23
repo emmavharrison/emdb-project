@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 
 import type { Schema } from '../../../../amplify/data/resource'
-import { generateClient } from 'aws-amplify/data'
+import { generateClient } from 'aws-amplify/api'
 
 const client = generateClient<Schema>()
 
@@ -25,13 +25,26 @@ export const Results = () => {
     refetchOnWindowFocus: false,
   });
 
+  // const createMovie = async () => {
+  //   await client.models.MovieDB.create({
+  //     movieId: "123",
+  //     collectionId: "collection-test",
+  //     userId: "user-test",
+  //     reviewText: "review test",
+  //   })
+  // }
+
   const createMovie = async () => {
-    await client.models.MovieDB.create({
-      movieId: "123",
-      collectionId: "collection-test",
-      userId: "user-test",
-      reviewText: "review test",
-    })
+    try {
+      await client.models.MovieDB.create({
+        movieId: "123",
+        collectionId: "collection-test",
+        userId: "user-test",
+        reviewText: "review test",
+      });
+    } catch (error) {
+      console.error('MovieDB model is not defined');
+    }
   }
 
   console.log("data in results", data);

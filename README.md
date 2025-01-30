@@ -21,6 +21,12 @@ This is a React project built with Vite that uses the following tools and techno
 - To generate the Amplify config JSON file, run `amplify pull --appId YOUR_APP_ID --envName YOUR_ENV_NAME`
 
 
+## Running the project lcoally
+
+- Ensure you have run `npm run sandbox` to generate a sandbox environment in AWS which allows you to run the project locally against the sandbox
+- Run `npm run dev` to run the frontend locally
+
+
 ## Features
 
 - **Authentication**: Setup with Amazon Cognito for secure user authentication.

@@ -8,7 +8,6 @@ export interface Movie {
     userId: string;
     collectionId: string;
     movieId: string;
-    reviewId: string;
     reviewText: string;
     collectionName: string;
 }

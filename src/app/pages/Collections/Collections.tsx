@@ -13,14 +13,14 @@ import { Movie } from "@/app/types/movie-backend-types";
 
 export const CollectionsPage = () => {
   // const [movies, setMovies] = useState<Movie[]>([]);
-  const [movies, setMovies] = useState<Schema["MovieDB"]["type"][]>([]);
+  const [movies, setMovies] = useState<Schema["Movie"]["type"][]>([]);
 
   useEffect(() => {
     const client = generateClient<Schema>()
     
     const fetchMovies = async () => {
       try {
-        const data = await client.models.MovieDB.list();
+        const data = await client.models.Movie.list();
         console.log('data', data);
         // Transform the data to ensure all fields are non-null
         const transformedMovies: Movie[] = data.data.map(movie => ({
@@ -30,7 +30,6 @@ export const CollectionsPage = () => {
           userId: movie.userId || '',
           collectionId: movie.collectionId || '',
           movieId: movie.movieId || '',
-          reviewId: movie.reviewId || '',
           reviewText: movie.reviewText || '',
           collectionName: movie.collectionName || '',
         }));
@@ -48,7 +47,7 @@ export const CollectionsPage = () => {
       <h1>Collections page</h1>
       {movies.length > 0 ? (
         <ul>
-          {movies.map(movie => <li key={movie.id}>{movie.movieId}</li>)}
+          {movies.map(movie => <li key={movie.id}>{movie.movieId}, {movie.collectionName}, {movie.reviewText}</li>)}
         </ul>
       ) : (
         <p>No movies found.</p>

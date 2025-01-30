@@ -12,7 +12,7 @@ export const ResultCard = ({ Title, Poster, Year, imdbID }: MovieResult) => {
       </div>
       <p className="py-2 text-center">{Year}</p>
       <div className="justify-self-center">
-      <SelectedMoviePopup movieName={Title} />
+      <SelectedMoviePopup movieName={Title} movieId={imdbID} />
       </div>
     </div>
   );

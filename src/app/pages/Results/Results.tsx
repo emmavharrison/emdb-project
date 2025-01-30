@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import type { Schema } from '../../../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/api'
 
+
 const client = generateClient<Schema>()
 
 export const Results = () => {
@@ -26,7 +27,7 @@ export const Results = () => {
   });
 
   // const createMovie = async () => {
-  //   await client.models.MovieDB.create({
+  //   await client.models.Movie.create({
   //     movieId: "123",
   //     collectionId: "collection-test",
   //     userId: "user-test",
@@ -36,14 +37,14 @@ export const Results = () => {
 
   const createMovie = async () => {
     try {
-      await client.models.MovieDB.create({
-        movieId: "123",
+      await client.models.Movie.create({
+        movieId: "1234",
         collectionId: "collection-test",
         userId: "user-test",
         reviewText: "review test",
       });
     } catch (error) {
-      console.error('MovieDB model is not defined');
+      console.error('Movie model is not defined', error);
     }
   }
 

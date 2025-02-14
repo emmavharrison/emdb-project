@@ -3,6 +3,12 @@ import { ResultsCards } from "@/app/components/movie-cards/search-results/Result
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 
+import type { Schema } from '../../../../amplify/data/resource'
+import { generateClient } from 'aws-amplify/api'
+
+
+const client = generateClient<Schema>()
+
 export const Results = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
   const { searchedMovie } = useParams();
@@ -20,6 +26,28 @@ export const Results = () => {
     refetchOnWindowFocus: false,
   });
 
+  // const createMovie = async () => {
+  //   await client.models.Movie.create({
+  //     movieId: "123",
+  //     collectionId: "collection-test",
+  //     userId: "user-test",
+  //     reviewText: "review test",
+  //   })
+  // }
+
+  const createMovie = async () => {
+    try {
+      await client.models.Movie.create({
+        movieId: "1234",
+        collectionId: "collection-test",
+        userId: "user-test",
+        reviewText: "review test",
+      });
+    } catch (error) {
+      console.error('Movie model is not defined', error);
+    }
+  }
+
   console.log("data in results", data);
 
   if (isLoading) {
@@ -31,6 +59,7 @@ export const Results = () => {
       <div>Results</div>
       <div>You searched for... {searchedMovie}</div>
       <div>There were {data?.totalResults} results</div>
+      <button onClick={createMovie}>Add new movie</button>
       <ResultsCards data={data} />
     </>
   );

@@ -12,9 +12,13 @@ import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import { CollectionsDropdown } from "./CollectionsDropdown"
 import { useState } from "react"
+import type { Schema } from '../../../../../amplify/data/resource'
+import { generateClient } from 'aws-amplify/api'
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 type SelectedMoviePopupProps = {
     movieName: string
+    movieId: string
 }
 
 interface SelectedCollection {
@@ -22,9 +26,13 @@ interface SelectedCollection {
   name: string;
 }
 
+const client = generateClient<Schema>()
+
 const collections = [{id: "1", name: "Collection 1"}, {id: "2", name: "Collection 2"}]
 
-export const SelectedMoviePopup = ({movieName}: SelectedMoviePopupProps) => {
+export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps) => {
+  const { user } = useAuthenticator((context) => [context.user]);
+
   const [review, setReview] = useState("")
   const [selectedCollections, setSelectedCollections] = useState<SelectedCollection[]>([])
 
@@ -36,10 +44,48 @@ export const SelectedMoviePopup = ({movieName}: SelectedMoviePopupProps) => {
     setSelectedCollections(collections);
   };
 
-  const handleSubmit = () => {
+  const addToCollection = async (collectionId: string) => {
+    try {
+      await client.models.Movie.create({
+        movieId,
+        collectionId,
+        userId: user?.userId,
+      });
+    } catch (error) {
+      console.error('Movie model is not defined', error);
+    }
+  }
+
+  const addReview = async () => {
+    try {
+      await client.models.Movie.create({
+        movieId,
+        userId: user?.userId,
+        reviewText: review
+      });
+    } catch (error) {
+      console.error('Movie model is not defined', error);
+    }
+  }
+
+  const handleSubmit = async () => {
     console.log('Review:', review);
     console.log('Selected Collections:', selectedCollections);
+
+    try {
+      const collectionPromises = selectedCollections.map(collection => addToCollection(collection.id))
+    
+      const reviewPromise = addReview()
+
+      await Promise.all([...collectionPromises, reviewPromise])
+      console.log('collections and reviews sent')
+
+    } catch (error) {
+      console.error('Error in handleSubmit in popup:', error)
+    }
   };
+
+
 
   return (
     <Dialog>

@@ -47,9 +47,11 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
   const addToCollection = async (collectionId: string) => {
     try {
       await client.models.Movie.create({
+        userId: user?.userId,
+        sk: `COLLECTION#${collectionId}`,
         movieId,
         collectionId,
-        userId: user?.userId,
+        // collectionName,
       });
     } catch (error) {
       console.error('Movie model is not defined', error);
@@ -59,8 +61,9 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
   const addReview = async () => {
     try {
       await client.models.Movie.create({
-        movieId,
         userId: user?.userId,
+        sk: `REVIEW#${movieId}`,
+        movieId,
         reviewText: review
       });
     } catch (error) {

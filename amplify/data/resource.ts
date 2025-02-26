@@ -9,12 +9,14 @@ specifies that any user authenticated via an API key can "create", "read",
 const schema = a.schema({
   Movie: a
     .model({
-      userId: a.string(),
+      userId: a.string().required(),
+      sk: a.string().required(),
       collectionId: a.string(),
       movieId: a.string(),
       reviewText: a.string(),
       collectionName: a.string()
     })
+    .identifier(['userId', 'sk'])
     .authorization((allow) => [allow.publicApiKey()]),
 });
 

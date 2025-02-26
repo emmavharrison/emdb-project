@@ -1,7 +1,7 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../../amplify/data/resource"
-import { useEffect, useState } from "react";
-import { Movie } from "@/app/types/movie-backend-types";
+import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+// import { Movie } from "@/app/types/movie-backend-types";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
 // <ul>{movies.map(movie => <li key={movie.id}>{movie.id}</li>)}</ul>
@@ -25,9 +25,11 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 // });
 
 
+
 export const CollectionsPage = () => {
   // const [movies, setMovies] = useState<Movie[]>([]);
   const [collections, setCollections] = useState<Schema["Movie"]["type"][]>([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -71,21 +73,34 @@ export const CollectionsPage = () => {
         setCollections(collections);
       } catch (error) {
         console.error('Error fetching collections:', error);
+      } finally {
+        setIsLoading(false)
       }
     };
 
     fetchCollections();
   }, []);
 
+  if (isLoading) {
+    return <p>Loading Collections...</p>
+  }
+
+  console.log('collections length', collections.length)
+  console.log('collections before return', collections)
+
   return (
     <div>
       <h1>Collections page</h1>
       {collections.length > 0 ? (
-        <ul>
+        <div>
           {collections.map(collection => (
-            <li key={collection.sk}>{collection.collectionName}</li>
+            <div 
+              key={collection.collectionId} 
+            >
+              Collection: {collection.collectionId}
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No collections found.</p>
       )}

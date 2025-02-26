@@ -51,7 +51,7 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
         sk: `COLLECTION#${collectionId}`,
         movieId,
         collectionId,
-        // collectionName,
+        collectionName: `Collection${collectionId}`
       });
     } catch (error) {
       console.error('Movie model is not defined', error);

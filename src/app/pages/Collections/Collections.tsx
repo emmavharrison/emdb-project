@@ -37,6 +37,8 @@ export const CollectionsPage = () => {
   console.log('collections length', collections.length)
   console.log('collections before return', collections)
 
+  // TODO: create collections card, use the Collection type from movie-backend-types when you pass in the data.
+
   return (
     <div>
       <h1>Collections page</h1>

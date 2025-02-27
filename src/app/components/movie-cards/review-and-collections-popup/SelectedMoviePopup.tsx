@@ -50,6 +50,7 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
         userId: user?.userId,
         sk: `COLLECTION#${collectionId}`,
         movieId,
+        movieName,
         collectionId,
         collectionName: `Collection${collectionId}`
       });

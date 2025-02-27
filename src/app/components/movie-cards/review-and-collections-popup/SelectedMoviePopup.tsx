@@ -64,6 +64,7 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
         userId: user?.userId,
         sk: `REVIEW#${movieId}`,
         movieId,
+        movieName,
         reviewText: review
       });
     } catch (error) {

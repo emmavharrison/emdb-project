@@ -3,11 +3,11 @@ import { ResultsCards } from "@/app/components/movie-cards/search-results/Result
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 
-import type { Schema } from '../../../../amplify/data/resource'
-import { generateClient } from 'aws-amplify/api'
+// import type { Schema } from '../../../../amplify/data/resource'
+// import { generateClient } from 'aws-amplify/api'
 
 
-const client = generateClient<Schema>()
+// const client = generateClient<Schema>()
 
 export const Results = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
@@ -26,6 +26,8 @@ export const Results = () => {
     refetchOnWindowFocus: false,
   });
 
+  // OLD FUNCTIONS FOR ADDING MOVIES, TO TEST RESULTS FETCHING
+
   // const createMovie = async () => {
   //   await client.models.Movie.create({
   //     movieId: "123",
@@ -35,18 +37,19 @@ export const Results = () => {
   //   })
   // }
 
-  const createMovie = async () => {
-    try {
-      await client.models.Movie.create({
-        movieId: "1234",
-        collectionId: "collection-test",
-        userId: "user-test",
-        reviewText: "review test",
-      });
-    } catch (error) {
-      console.error('Movie model is not defined', error);
-    }
-  }
+  // const createMovie = async () => {
+  //   try {
+  //     await client.models.Movie.create({
+  //       movieId: "1234",
+  //       collectionId: "collection-test",
+  //       userId: "user-test",
+  //       reviewText: "review test",
+  //       sk: ""
+  //     });
+  //   } catch (error) {
+  //     console.error('Movie model is not defined', error);
+  //   }
+  // }
 
   console.log("data in results", data);
 
@@ -59,7 +62,7 @@ export const Results = () => {
       <div>Results</div>
       <div>You searched for... {searchedMovie}</div>
       <div>There were {data?.totalResults} results</div>
-      <button onClick={createMovie}>Add new movie</button>
+      {/* <button onClick={createMovie}>Add new movie</button> */}
       <ResultsCards data={data} />
     </>
   );

@@ -3,6 +3,7 @@
 
 export interface Movie {
     id: string;
+    sk: string;
     createdAt: string;
     updatedAt: string;
     userId: string;
@@ -10,4 +11,13 @@ export interface Movie {
     movieId: string;
     reviewText: string;
     collectionName: string;
+}
+
+export interface Collection {
+    id: string;
+    sk: string;
+    collectionId: string;
+    movieId: string;
+    collectionName: string;
+    userId: string;
 }

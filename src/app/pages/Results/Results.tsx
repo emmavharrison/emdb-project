@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 
 // const client = generateClient<Schema>()
 
-export const Results = () => {
+export const ResultsPage = () => {
   // const { user } = useAuthenticator((context) => [context.user]);
   const { searchedMovie } = useParams();
 
@@ -25,31 +25,6 @@ export const Results = () => {
     },
     refetchOnWindowFocus: false,
   });
-
-  // OLD FUNCTIONS FOR ADDING MOVIES, TO TEST RESULTS FETCHING
-
-  // const createMovie = async () => {
-  //   await client.models.Movie.create({
-  //     movieId: "123",
-  //     collectionId: "collection-test",
-  //     userId: "user-test",
-  //     reviewText: "review test",
-  //   })
-  // }
-
-  // const createMovie = async () => {
-  //   try {
-  //     await client.models.Movie.create({
-  //       movieId: "1234",
-  //       collectionId: "collection-test",
-  //       userId: "user-test",
-  //       reviewText: "review test",
-  //       sk: ""
-  //     });
-  //   } catch (error) {
-  //     console.error('Movie model is not defined', error);
-  //   }
-  // }
 
   console.log("data in results", data);
 

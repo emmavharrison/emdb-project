@@ -70,6 +70,11 @@ const LoggedInNavBar = () => {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a href="/reviews">Reviews</a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a href="/profile">Profile</a>
           </NavigationMenuLink>
         </NavigationMenuItem>

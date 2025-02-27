@@ -1,6 +1,6 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../../amplify/data/resource"
-import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { Movie } from "@/app/types/movie-backend-types";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 

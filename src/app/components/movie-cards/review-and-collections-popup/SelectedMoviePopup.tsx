@@ -19,6 +19,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 type SelectedMoviePopupProps = {
     movieName: string
     movieId: string
+    moviePoster: string
 }
 
 interface SelectedCollection {
@@ -30,7 +31,7 @@ const client = generateClient<Schema>()
 
 const collections = [{id: "1", name: "Collection 1"}, {id: "2", name: "Collection 2"}]
 
-export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps) => {
+export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMoviePopupProps) => {
   const { user } = useAuthenticator((context) => [context.user]);
 
   const [review, setReview] = useState("")
@@ -51,6 +52,7 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
         sk: `COLLECTION#${collectionId}`,
         movieId,
         movieName,
+        moviePoster,
         collectionId,
         collectionName: `Collection${collectionId}`
       });
@@ -66,6 +68,7 @@ export const SelectedMoviePopup = ({movieName, movieId}: SelectedMoviePopupProps
         sk: `REVIEW#${movieId}`,
         movieId,
         movieName,
+        moviePoster,
         reviewText: review
       });
     } catch (error) {

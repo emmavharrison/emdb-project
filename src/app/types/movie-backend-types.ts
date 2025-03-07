@@ -27,4 +27,5 @@ export interface Review {
     reviewText: string;
     movieName: string;
     movieId: string;
+    moviePoster: string;
 }

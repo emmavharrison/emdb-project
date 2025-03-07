@@ -13,7 +13,8 @@ export const ReviewMovieCards: React.FC<ReviewMovieCardsProps> = ({ data }) => {
         <ReviewMovieCard
         movieId={review.movieId}
         movieName={review.movieName}
-        reviewText={review.reviewText}/>
+        reviewText={review.reviewText}
+        moviePoster={review.moviePoster}/>
       ))}
     </div>
   );

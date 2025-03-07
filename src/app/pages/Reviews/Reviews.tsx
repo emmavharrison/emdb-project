@@ -18,7 +18,8 @@ export const ReviewsPage = () => {
       .map(review => ({
         movieName: review.movieName!,
         movieId: review.movieId!,
-        reviewText: review.reviewText!
+        reviewText: review.reviewText!,
+        moviePoster: review.moviePoster!
       }));
   };
 

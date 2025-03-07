@@ -14,6 +14,7 @@ const schema = a.schema({
       collectionId: a.string(),
       movieId: a.string(),
       movieName: a.string(),
+      moviePoster: a.string(),
       reviewText: a.string(),
       collectionName: a.string()
     })

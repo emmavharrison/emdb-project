@@ -11,10 +11,11 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import { CollectionsDropdown } from "./CollectionsDropdown"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Schema } from '../../../../../amplify/data/resource'
 import { generateClient } from 'aws-amplify/api'
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { Collection } from "@/app/types/movie-frontend-types"
 
 type SelectedMoviePopupProps = {
     movieName: string
@@ -23,19 +24,20 @@ type SelectedMoviePopupProps = {
 }
 
 interface SelectedCollection {
-  id: string;
-  name: string;
+  collectionId: string;
+  collectionName: string;
 }
 
 const client = generateClient<Schema>()
 
-const collections = [{id: "1", name: "Collection 1"}, {id: "2", name: "Collection 2"}]
+// const collections = [{id: "1", name: "Collection 1"}, {id: "2", name: "Collection 2"}]
 
 export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMoviePopupProps) => {
   const { user } = useAuthenticator((context) => [context.user]);
 
   const [review, setReview] = useState("")
   const [selectedCollections, setSelectedCollections] = useState<SelectedCollection[]>([])
+  const [collections, setCollections] = useState<Collection[]>([])
 
   const handleReviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReview(event.target.value);
@@ -81,7 +83,7 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
     console.log('Selected Collections:', selectedCollections);
 
     try {
-      const collectionPromises = selectedCollections.map(collection => addToCollection(collection.id))
+      const collectionPromises = selectedCollections.map(collection => addToCollection(collection.collectionId))
     
       const reviewPromise = addReview()
 
@@ -94,6 +96,36 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
   };
 
 
+    const mapCollections = (collections: Schema["Movie"]["type"][]): Collection[] => {
+      return collections
+        .filter(collection => collection.collectionId && collection.collectionName)
+        .map(collection => ({
+          collectionId: collection.collectionId!,
+          collectionName: collection.collectionName!,
+        }));
+    };
+
+
+    useEffect(() => {
+      const client = generateClient<Schema>()
+      
+      const fetchAllCollections = async () => {
+        try {
+          const { data: collections } = await client.models.Movie.list({
+            userId: user?.userId,
+            sk: { beginsWith: 'COLLECTION#' }
+          });
+          // setReviews(reviews);
+          setCollections(mapCollections(collections))
+        } catch (error) {
+          console.error('Error fetching reviews:', error);
+        }
+      };
+  
+      fetchAllCollections();
+    }, []);
+
+    console.log('collections', collections)
 
   return (
     <Dialog>

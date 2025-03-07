@@ -2,6 +2,9 @@ import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../../amplify/data/resource"
 import { useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { CreateCollectionsPopup } from "@/app/components/collections/CreateCollectionsPopup";
+
+const client = generateClient<Schema>()
 
 export const CollectionsPage = () => {
   const [collections, setCollections] = useState<Schema["Movie"]["type"][]>([]);
@@ -42,6 +45,7 @@ export const CollectionsPage = () => {
   return (
     <div>
       <h1>Collections page</h1>
+      <CreateCollectionsPopup />
       {collections.length > 0 ? (
         <div>
           {collections.map(collection => (

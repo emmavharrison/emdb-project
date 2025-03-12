@@ -10,23 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu"
+import { Collection } from "@/app/types/movie-frontend-types"
 
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 
-interface Collection {
-    id: string;
-    name: string;
-    disabled?: boolean;
-}
-
-interface SelectedCollection {
-    id: string;
-    name: string;
-}
-
 type CollectionsDropdownProps = {
   collections: Collection[];
-  onSelectionChange: (selectedCollections: SelectedCollection[]) => void;
+  onSelectionChange: (selectedCollections: Collection[]) => void;
 }
 
 export const CollectionsDropdown = ({collections, onSelectionChange}: CollectionsDropdownProps) => {
@@ -35,7 +25,7 @@ export const CollectionsDropdown = ({collections, onSelectionChange}: Collection
 //   const [showPanel, setShowPanel] = React.useState<Checked>(false)
 
   const [checkedState, setCheckedState] = React.useState<{ [key: string]: Checked }>(
-    collections.reduce((acc, collection) => ({ ...acc, [collection.id]: false }), {})
+    collections.reduce((acc, collection) => ({ ...acc, [collection.collectionId]: false }), {})
   );
 
   const handleCheckedChange = (id: string, checked: Checked) => {
@@ -43,8 +33,8 @@ export const CollectionsDropdown = ({collections, onSelectionChange}: Collection
     setCheckedState(newCheckedState);
     
     const selectedCollections = collections
-      .filter(collection => newCheckedState[collection.id])
-      .map(collection => ({ id: collection.id, name: collection.name }));
+      .filter(collection => newCheckedState[collection.collectionId])
+      .map(collection => ({ collectionId: collection.collectionId, collectionName: collection.collectionName }));
     
     onSelectionChange(selectedCollections);
   };
@@ -59,12 +49,12 @@ export const CollectionsDropdown = ({collections, onSelectionChange}: Collection
         <DropdownMenuSeparator />
         {collections.map((collection) => (
           <DropdownMenuCheckboxItem
-          key={collection.id}
-          checked={checkedState[collection.id]}
-          onCheckedChange={(checked) => handleCheckedChange(collection.id, checked)}
+          key={collection.collectionId}
+          checked={checkedState[collection.collectionId]}
+          onCheckedChange={(checked) => handleCheckedChange(collection.collectionId, checked)}
           disabled={collection.disabled}
           >
-            {collection.name}
+            {collection.collectionName}
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>

@@ -16,7 +16,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Collection } from "@/app/types/movie-frontend-types"
 import { addToCollection } from "@/app/helpers/addToCollection"
 import { addReview } from "@/app/helpers/addReview"
-import { fetchAllCollections } from "@/app/helpers/fetchAllCollections"
+import { fetchAllCollectionsForDropdown } from "@/app/helpers/fetchAllCollectionsForDropdown"
 
 type SelectedMoviePopupProps = {
     movieName: string
@@ -75,7 +75,7 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
   };
 
     useEffect(() => {
-      fetchAllCollections({user, setCollections});
+      fetchAllCollectionsForDropdown({user, setCollections});
     }, []);
 
     console.log('collections', collections)

@@ -6,7 +6,6 @@ import { ReviewMovieCards } from "@/app/components/movie-cards/review-cards/Revi
 import { Review } from "@/app/types/movie-backend-types";
 
 export const ReviewsPage = () => {
-  // const [reviews, setReviews] = useState<Schema["Movie"]["type"][]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true)
 
@@ -33,7 +32,6 @@ export const ReviewsPage = () => {
           sk: { beginsWith: 'REVIEW#' }
         });
         console.log('reviews', reviews);
-        // setReviews(reviews);
         setReviews(mapReviews(reviews))
       } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -48,25 +46,6 @@ export const ReviewsPage = () => {
   if (isLoading) {
     return <p>Loading Reviews...</p>
   }
-
-//   return (
-//     <div>
-//       <h1>Reviews page</h1>
-//       {reviews.length > 0 ? (
-//         <div>
-//           {reviews.map(review => (
-//             <div 
-//               key={review.sk} 
-//             >
-//               Review for {review.movieName}: {review.reviewText}
-//             </div>
-//           ))}
-//         </div>
-//       ) : (
-//         <p>No reviews found.</p>
-//       )}
-//     </div>
-//   );
 
 return (
     <div>

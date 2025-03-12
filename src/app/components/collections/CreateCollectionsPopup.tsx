@@ -11,33 +11,16 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import { useState } from "react"
-
-import { generateClient } from 'aws-amplify/api'
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import { Schema } from "amplify/data/resource"
-
-const client = generateClient<Schema>()
+import { createCollection } from "@/app/helpers/createCollection"
+import { useAuthenticator } from "@aws-amplify/ui-react"
 
 export const CreateCollectionsPopup = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
   const [collectionName, setCollectionName] = useState('')
+  const { user } = useAuthenticator((context) => [context.user]);
 
   const handleCollectionNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCollectionName(event.target.value);
   };
-
-  const createCollection = async (collectionName: string) => {
-    try {
-      await client.models.Movie.create({
-        userId: user?.userId,
-        sk: `COLLECTION#${collectionName}`,
-        collectionId: `ID-${collectionName}`,
-        collectionName,
-      });
-    } catch (error) {
-      console.error('Could not create collection', error);
-    }
-  }
 
   return (
     <Dialog>
@@ -60,7 +43,7 @@ export const CreateCollectionsPopup = () => {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={() => {createCollection(collectionName)}}>Save Changes</Button>
+          <Button type="submit" onClick={() => {createCollection(collectionName, user)}}>Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

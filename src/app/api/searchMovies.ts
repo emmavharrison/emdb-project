@@ -1,15 +1,7 @@
-// const apiKey = import.meta.env.REACT_APP_API_KEY;
-
 export const fetchSearchMovies = async (searchedMovie: string) => {
-  // if (!apiKey) {
-  //   throw new Error("Missing API key");
-  // }
-
   console.log("searched movie", searchedMovie);
-  // console.log("apikey", apiKey);
 
   const response = await fetch(
-    // `https://www.omdbapi.com/?t=${searchedMovie}&apikey=${apiKey}`
     `https://www.omdbapi.com/?s=${searchedMovie}&apikey=5b006bb3`
   );
 
@@ -27,5 +19,3 @@ export const fetchSearchMovies = async (searchedMovie: string) => {
 
   return data;
 };
-
-// https://www.omdbapi.com/?t=PRIDE+AND+PREJUDICE&apikey=5b006bb3

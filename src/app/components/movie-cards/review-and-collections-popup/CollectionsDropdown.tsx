@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu"
 import { Collection } from "@/app/types/movie-frontend-types"
+import { useEffect } from "react"
 
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 
@@ -20,13 +21,18 @@ type CollectionsDropdownProps = {
 }
 
 export const CollectionsDropdown = ({collections, onSelectionChange}: CollectionsDropdownProps) => {
-  // const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true)
-//   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false)
-//   const [showPanel, setShowPanel] = React.useState<Checked>(false)
-
   const [checkedState, setCheckedState] = React.useState<{ [key: string]: Checked }>(
     collections.reduce((acc, collection) => ({ ...acc, [collection.collectionId]: false }), {})
   );
+
+  useEffect(() => {
+    setCheckedState(
+      collections.reduce((acc, collection) => ({ 
+        ...acc, 
+        [collection.collectionId]: checkedState[collection.collectionId] || false 
+      }), {})
+    );
+  }, [collections]);
 
   const handleCheckedChange = (id: string, checked: Checked) => {
     const newCheckedState = { ...checkedState, [id]: checked };

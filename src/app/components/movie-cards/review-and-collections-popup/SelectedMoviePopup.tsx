@@ -12,10 +12,11 @@ import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import { CollectionsDropdown } from "./CollectionsDropdown"
 import { useEffect, useState } from "react"
-import type { Schema } from '../../../../../amplify/data/resource'
-import { generateClient } from 'aws-amplify/api'
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { Collection } from "@/app/types/movie-frontend-types"
+import { addToCollection } from "@/app/helpers/addToCollection"
+import { addReview } from "@/app/helpers/addReview"
+import { fetchAllCollections } from "@/app/helpers/fetchAllCollections"
 
 type SelectedMoviePopupProps = {
     movieName: string
@@ -27,10 +28,6 @@ interface SelectedCollection {
   collectionId: string;
   collectionName: string;
 }
-
-const client = generateClient<Schema>()
-
-// const collections = [{id: "1", name: "Collection 1"}, {id: "2", name: "Collection 2"}]
 
 export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMoviePopupProps) => {
   const { user } = useAuthenticator((context) => [context.user]);
@@ -47,45 +44,27 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
     setSelectedCollections(collections);
   };
 
-  const addToCollection = async (collectionId: string) => {
-    try {
-      await client.models.Movie.create({
-        userId: user?.userId,
-        sk: `COLLECTION#${collectionId}`,
-        movieId,
-        movieName,
-        moviePoster,
-        collectionId,
-        collectionName: `Collection${collectionId}`
-      });
-    } catch (error) {
-      console.error('Movie model is not defined', error);
-    }
-  }
-
-  const addReview = async () => {
-    try {
-      await client.models.Movie.create({
-        userId: user?.userId,
-        sk: `REVIEW#${movieId}`,
-        movieId,
-        movieName,
-        moviePoster,
-        reviewText: review
-      });
-    } catch (error) {
-      console.error('Movie model is not defined', error);
-    }
-  }
-
   const handleSubmit = async () => {
     console.log('Review:', review);
     console.log('Selected Collections:', selectedCollections);
 
     try {
-      const collectionPromises = selectedCollections.map(collection => addToCollection(collection.collectionId))
-    
-      const reviewPromise = addReview()
+      const collectionPromises = selectedCollections.map(collection => 
+        addToCollection({
+          collectionId: collection.collectionId, 
+          user, 
+          movieId, 
+          movieName, 
+          moviePoster,
+          collectionName: collection.collectionName
+        }))
+      const reviewPromise = addReview({
+        user,
+        movieId,
+        movieName,
+        moviePoster,
+        review
+      })
 
       await Promise.all([...collectionPromises, reviewPromise])
       console.log('collections and reviews sent')
@@ -95,34 +74,8 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
     }
   };
 
-
-    const mapCollections = (collections: Schema["Movie"]["type"][]): Collection[] => {
-      return collections
-        .filter(collection => collection.collectionId && collection.collectionName)
-        .map(collection => ({
-          collectionId: collection.collectionId!,
-          collectionName: collection.collectionName!,
-        }));
-    };
-
-
     useEffect(() => {
-      const client = generateClient<Schema>()
-      
-      const fetchAllCollections = async () => {
-        try {
-          const { data: collections } = await client.models.Movie.list({
-            userId: user?.userId,
-            sk: { beginsWith: 'COLLECTION#' }
-          });
-          // setReviews(reviews);
-          setCollections(mapCollections(collections))
-        } catch (error) {
-          console.error('Error fetching reviews:', error);
-        }
-      };
-  
-      fetchAllCollections();
+      fetchAllCollections({user, setCollections});
     }, []);
 
     console.log('collections', collections)

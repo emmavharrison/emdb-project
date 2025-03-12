@@ -22,7 +22,7 @@ export const addToCollection = async ({collectionId, user, movieId, movieName, m
             movieName,
             moviePoster,
             collectionId,
-            collectionName: `Collection${collectionId}`
+            collectionName
         });
     } catch (error) {
         console.error('Movie model is not defined', error);

@@ -11,74 +11,23 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { Label } from "@/app/components/ui/label"
 import { CollectionsDropdown } from "./CollectionsDropdown"
-import { useEffect, useState } from "react"
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import { Collection } from "@/app/types/movie-frontend-types"
-import { addToCollection } from "@/app/helpers/addToCollection"
-import { addReview } from "@/app/helpers/addReview"
-import { fetchAllCollectionsForDropdown } from "@/app/helpers/fetchAllCollectionsForDropdown"
+import { useMovieActions } from "@/app/hooks/useMoviePopupActions"
+
 
 type SelectedMoviePopupProps = {
-    movieName: string
-    movieId: string
-    moviePoster: string
-}
-
-interface SelectedCollection {
-  collectionId: string;
-  collectionName: string;
+  movieName: string
+  movieId: string
+  moviePoster: string
 }
 
 export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMoviePopupProps) => {
-  const { user } = useAuthenticator((context) => [context.user]);
-
-  const [review, setReview] = useState("")
-  const [selectedCollections, setSelectedCollections] = useState<SelectedCollection[]>([])
-  const [collections, setCollections] = useState<Collection[]>([])
-
-  const handleReviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setReview(event.target.value);
-  };
-  
-  const handleCollectionChange = (collections: SelectedCollection[]) => {
-    setSelectedCollections(collections);
-  };
-
-  const handleSubmit = async () => {
-    console.log('Review:', review);
-    console.log('Selected Collections:', selectedCollections);
-
-    try {
-      const collectionPromises = selectedCollections.map(collection => 
-        addToCollection({
-          collectionId: collection.collectionId, 
-          user, 
-          movieId, 
-          movieName, 
-          moviePoster,
-          collectionName: collection.collectionName
-        }))
-      const reviewPromise = addReview({
-        user,
-        movieId,
-        movieName,
-        moviePoster,
-        review
-      })
-
-      await Promise.all([...collectionPromises, reviewPromise])
-      console.log('collections and reviews sent')
-
-    } catch (error) {
-      console.error('Error in handleSubmit in popup:', error)
-    }
-  };
-
-    useEffect(() => {
-      fetchAllCollectionsForDropdown({user, setCollections});
-    }, []);
-
-    console.log('collections', collections)
+  const {
+    review,
+    collections,
+    handleReviewChange,
+    handleCollectionChange,
+    handleSubmit
+  } = useMovieActions(movieId, movieName, moviePoster);
 
   return (
     <Dialog>
@@ -87,7 +36,7 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-        <DialogTitle>{movieName}</DialogTitle>
+          <DialogTitle>{movieName}</DialogTitle>
           <DialogDescription>
             Review this movie or add it to a collection!
           </DialogDescription>
@@ -97,13 +46,22 @@ export const SelectedMoviePopup = ({movieName, movieId, moviePoster}: SelectedMo
             <Label htmlFor="review" className="text-left font-medium">
               Review
             </Label>
-            <Input id="review" value={review} onChange={handleReviewChange} placeholder="Start reviewing" className="w-full" />
+            <Input 
+              id="review" 
+              value={review} 
+              onChange={handleReviewChange} 
+              placeholder="Start reviewing" 
+              className="w-full" 
+            />
           </div>
           <div className="flex flex-col space-y-2">
-          <Label className="text-left font-medium">
+            <Label className="text-left font-medium">
               Collections
             </Label>
-            <CollectionsDropdown collections={collections} onSelectionChange={handleCollectionChange} />
+            <CollectionsDropdown 
+              collections={collections} 
+              onSelectionChange={handleCollectionChange} 
+            />
           </div>
         </div>
         <DialogFooter>

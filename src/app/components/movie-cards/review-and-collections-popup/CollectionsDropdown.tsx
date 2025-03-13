@@ -1,6 +1,4 @@
 import * as React from "react"
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
-
 import { Button } from "@/app/components/ui/button"
 import {
   DropdownMenu,
@@ -11,9 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu"
 import { Collection } from "@/app/types/movie-frontend-types"
-import { useEffect } from "react"
+import { useCollectionsDropdown } from "@/app/hooks/useCollectionsDropdownOnPopup"
 
-type Checked = DropdownMenuCheckboxItemProps["checked"]
 
 type CollectionsDropdownProps = {
   collections: Collection[];
@@ -21,29 +18,7 @@ type CollectionsDropdownProps = {
 }
 
 export const CollectionsDropdown = ({collections, onSelectionChange}: CollectionsDropdownProps) => {
-  const [checkedState, setCheckedState] = React.useState<{ [key: string]: Checked }>(
-    collections.reduce((acc, collection) => ({ ...acc, [collection.collectionId]: false }), {})
-  );
-
-  useEffect(() => {
-    setCheckedState(
-      collections.reduce((acc, collection) => ({ 
-        ...acc, 
-        [collection.collectionId]: checkedState[collection.collectionId] || false 
-      }), {})
-    );
-  }, [collections]);
-
-  const handleCheckedChange = (id: string, checked: Checked) => {
-    const newCheckedState = { ...checkedState, [id]: checked };
-    setCheckedState(newCheckedState);
-    
-    const selectedCollections = collections
-      .filter(collection => newCheckedState[collection.collectionId])
-      .map(collection => ({ collectionId: collection.collectionId, collectionName: collection.collectionName }));
-    
-    onSelectionChange(selectedCollections);
-  };
+  const { checkedState, handleCheckedChange } = useCollectionsDropdown(collections, onSelectionChange);
 
   return (
     <DropdownMenu>

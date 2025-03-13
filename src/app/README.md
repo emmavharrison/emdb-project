@@ -1,5 +1,13 @@
 # EMDB
 
+## Hooks
+
+*useMoviePopupActions*
+Used in the `SelectedMoviePopup` component to extract out business logic - things like adding a review for a movie, adding a movie to a collection, and submitting this data.
+
+*useSearchMovies*
+Used to make a call to the OMDB Movie API.
+
 ## Helpers
 
 *createCollections*

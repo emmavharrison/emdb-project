@@ -6,7 +6,6 @@ import { Navigate } from "react-router";
 export const SearchBar = () => {
   const [searchedMovie, setSearchedMovie] = useState<string>("");
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-  // const [data, setData] = useState({})
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedMovie(e.target.value);
